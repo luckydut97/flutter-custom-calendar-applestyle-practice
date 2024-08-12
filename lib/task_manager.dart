@@ -12,43 +12,18 @@ class TaskManager extends StatefulWidget {
 
 class _TaskManagerState extends State<TaskManager> {
   List<String> _tasks = [];
-  List<bool> _selectedTasks = [];
-  List<bool> _completedTasks = [];
+  List<bool> _completedTasks = []; // 완료 상태만 관리
 
   void _addTask(String task) {
     setState(() {
       _tasks.add(task);
-      _selectedTasks.add(false);
-      _completedTasks.add(false);
+      _completedTasks.add(false); // 새로운 작업은 기본적으로 완료되지 않은 상태
     });
   }
 
   void _editTask(int index, String newTask) {
     setState(() {
       _tasks[index] = newTask;
-    });
-  }
-
-  void _removeSelectedTasks() {
-    setState(() {
-      for (int i = _tasks.length - 1; i >= 0; i--) {
-        if (_selectedTasks[i]) {
-          _tasks.removeAt(i);
-          _selectedTasks.removeAt(i);
-          _completedTasks.removeAt(i);
-        }
-      }
-    });
-  }
-
-  void _completeSelectedTasks() {
-    setState(() {
-      for (int i = 0; i < _tasks.length; i++) {
-        if (_selectedTasks[i]) {
-          _completedTasks[i] = !_completedTasks[i];
-          _selectedTasks[i] = false;
-        }
-      }
     });
   }
 
@@ -130,83 +105,88 @@ class _TaskManagerState extends State<TaskManager> {
                   ),
                 ],
               ),
-              Row(
-                children: [
-                  IconButton(
-                    icon: Icon(Icons.check_circle),
-                    onPressed: _completeSelectedTasks,
-                  ),
-                  IconButton(
-                    icon: Icon(Icons.delete),
-                    onPressed: _removeSelectedTasks,
-                  ),
-                ],
-              ),
+              // 삭제할 IconButton들 제거
             ],
           ),
           Expanded(
             child: ListView.builder(
               itemCount: _tasks.length,
               itemBuilder: (context, index) {
-                return Container(
-                  margin: EdgeInsets.only(bottom: 8.0),
-                  child: Row(
-                    children: [
-                      Container(
-                        width: 10.0,
-                        height: 40.0,
-                        decoration: BoxDecoration(
-                          color: Color(0xFF7EB4EE),
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(12.0),
-                            bottomLeft: Radius.circular(12.0),
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        child: Container(
+                return Dismissible(
+                  key: Key(_tasks[index]),
+                  direction: DismissDirection.endToStart,
+                  onDismissed: (direction) {
+                    setState(() {
+                      _tasks.removeAt(index);
+                      _completedTasks.removeAt(index); // 해당 작업과 완료 상태 모두 삭제
+                    });
+                  },
+                  background: Container(
+                    alignment: Alignment.centerRight,
+                    padding: EdgeInsets.symmetric(horizontal: 20),
+                    color: Colors.redAccent,
+                    child: Icon(Icons.delete, color: Colors.white),
+                  ),
+                  child: Container(
+                    margin: EdgeInsets.only(bottom: 8.0),
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 10.0,
                           height: 40.0,
                           decoration: BoxDecoration(
-                            color: Colors.white,
+                            color: Color(0xFF7EB4EE),
                             borderRadius: BorderRadius.only(
-                              topRight: Radius.circular(12.0),
-                              bottomRight: Radius.circular(12.0),
+                              topLeft: Radius.circular(12.0),
+                              bottomLeft: Radius.circular(12.0),
                             ),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey.withOpacity(0.3),
-                                spreadRadius: 1,
-                                blurRadius: 2,
-                                offset: Offset(0, 2),
-                              ),
-                            ],
-                          ),
-                          child: Row(
-                            children: [
-                              Checkbox(
-                                value: _selectedTasks[index],
-                                onChanged: (bool? value) {
-                                  setState(() {
-                                    _selectedTasks[index] = value ?? false;
-                                  });
-                                },
-                              ),
-                              Expanded(
-                                child: Text(
-                                  _tasks[index],
-                                  style: TextStyle(
-                                    decoration: _completedTasks[index]
-                                        ? TextDecoration.lineThrough
-                                        : TextDecoration.none,
-                                    color: Colors.black,
-                                  ),
-                                ),
-                              ),
-                            ],
                           ),
                         ),
-                      ),
-                    ],
+                        Expanded(
+                          child: Container(
+                            height: 40.0,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.only(
+                                topRight: Radius.circular(12.0),
+                                bottomRight: Radius.circular(12.0),
+                              ),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.3),
+                                  spreadRadius: 1,
+                                  blurRadius: 2,
+                                  offset: Offset(0, 2),
+                                ),
+                              ],
+                            ),
+                            child: Row(
+                              children: [
+                                Checkbox(
+                                  value: _completedTasks[index], // 완료 상태 반영
+                                  onChanged: (bool? value) {
+                                    setState(() {
+                                      _completedTasks[index] = value ?? false;
+                                    });
+                                  },
+                                ),
+                                Expanded(
+                                  child: Text(
+                                    _tasks[index],
+                                    style: TextStyle(
+                                      decoration: _completedTasks[index]
+                                          ? TextDecoration.lineThrough
+                                          : TextDecoration.none,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 );
               },
