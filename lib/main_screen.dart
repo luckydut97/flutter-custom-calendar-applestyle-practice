@@ -35,7 +35,7 @@ class MainScreen extends StatelessWidget {
                 elevation: 0, // 그림자 제거
               ),
               Expanded(
-                flex: 2,
+                flex: 6,
                 child: Consumer<CalendarModel>(
                   builder: (context, model, child) {
                     return Padding(
@@ -68,7 +68,7 @@ class MainScreen extends StatelessWidget {
                 ),
               ),
               Expanded(
-                flex: 2,
+                flex: 7,
                 child: Consumer<CalendarModel>(
                   builder: (context, model, child) {
                     return TaskManager(
@@ -212,7 +212,7 @@ class CalendarMonth extends StatelessWidget {
       color: Colors.white,
       padding: const EdgeInsets.all(8.0),
       child: Table(
-        border: TableBorder.all(color: Colors.transparent),
+        border: TableBorder.all(color: Colors.grey, width: 0.3), // 테두리 색상과 두께 추가
         children: _buildCalendar(context),
       ),
     );

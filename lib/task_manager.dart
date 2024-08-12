@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:dotted_border/dotted_border.dart'; // DottedBorder 패키지 import
 import 'package:intl/intl.dart';
 import 'calendar_model.dart';
 
@@ -191,21 +192,40 @@ class _TaskManagerState extends State<TaskManager> {
               },
             ),
           ),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.grey[300],
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12.0),
-              ),
-              padding: EdgeInsets.symmetric(vertical: 12.0),
-            ),
-            onPressed: () => _showTaskInputDialog(),
-            child: Text(
-              '+',
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 16.0,
-              ),
+          Container(
+            margin: EdgeInsets.only(top: 8.0), // 위에 약간의 간격 추가
+            child: Row(
+              children: [
+                Expanded(
+                  child: DottedBorder(
+                    borderType: BorderType.RRect,
+                    radius: Radius.circular(12.0),
+                    dashPattern: [6, 3], // 점선 패턴 설정 (길이 6, 간격 3)
+                    color: Colors.grey, // 점선 색상
+                    strokeWidth: 1, // 점선 두께
+                    child: OutlinedButton(
+                      style: OutlinedButton.styleFrom(
+                        backgroundColor: Colors.transparent,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12.0),
+                        ),
+                        side: BorderSide.none,
+                        padding: EdgeInsets.symmetric(vertical: 12.0),
+                      ),
+                      onPressed: () => _showTaskInputDialog(),
+                      child: Center(
+                        child: Text(
+                          '+ 할일 추가',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 16.0,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         ],
