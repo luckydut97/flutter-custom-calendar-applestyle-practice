@@ -1,22 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:dotted_border/dotted_border.dart'; // DottedBorder 패키지 import
-import 'package:intl/intl.dart';
-import 'calendar_model.dart';
+import 'package:dotted_border/dotted_border.dart';
 
 class TaskManager extends StatefulWidget {
   final DateTime selectedDate;
-  final CalendarModel model;
 
-  TaskManager({required this.selectedDate, required this.model});
+  TaskManager({required this.selectedDate});
 
   @override
   _TaskManagerState createState() => _TaskManagerState();
 }
 
 class _TaskManagerState extends State<TaskManager> {
-  List<String> _tasks = []; // 할 일 목록을 저장할 리스트
-  List<bool> _selectedTasks = []; // 선택된 할 일을 추적하는 리스트
-  List<bool> _completedTasks = []; // 완료된 할 일을 추적하는 리스트
+  List<String> _tasks = [];
+  List<bool> _selectedTasks = [];
+  List<bool> _completedTasks = [];
 
   void _addTask(String task) {
     setState(() {
@@ -102,10 +99,10 @@ class _TaskManagerState extends State<TaskManager> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: MediaQuery.of(context).size.width, // 가로로 화면을 꽉 채우도록 설정
+      width: MediaQuery.of(context).size.width,
       padding: EdgeInsets.all(16.0),
       decoration: BoxDecoration(
-        color: Colors.transparent, // 배경을 투명하게 설정하여 그라데이션이 그대로 보이도록 함
+        color: Colors.transparent,
         borderRadius: BorderRadius.vertical(top: Radius.circular(16.0)),
       ),
       child: Column(
@@ -116,18 +113,19 @@ class _TaskManagerState extends State<TaskManager> {
               Row(
                 children: [
                   Text(
-                    '${widget.selectedDate.day}', // 선택한 날의 숫자만 표시
+                    '${widget.selectedDate.day}',
                     style: TextStyle(
-                      fontSize: 18,
+                      fontSize: 30,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  SizedBox(width: 8), // 숫자와 텍스트 사이에 간격 추가
+                  SizedBox(width: 8),
                   Text(
-                    'Upcoming Event', // 오른쪽에 "Upcoming Event" 텍스트 추가
+                    'Upcoming Event',
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.normal,
+                      color: Color(0xFF7EB4EE),
                     ),
                   ),
                 ],
@@ -156,9 +154,9 @@ class _TaskManagerState extends State<TaskManager> {
                     children: [
                       Container(
                         width: 10.0,
-                        height: 40.0, // 고정된 높이 설정
+                        height: 40.0,
                         decoration: BoxDecoration(
-                          color: Colors.blue, // 파란색 바
+                          color: Color(0xFF7EB4EE),
                           borderRadius: BorderRadius.only(
                             topLeft: Radius.circular(12.0),
                             bottomLeft: Radius.circular(12.0),
@@ -167,7 +165,7 @@ class _TaskManagerState extends State<TaskManager> {
                       ),
                       Expanded(
                         child: Container(
-                          height: 40.0, // 고정된 높이 설정
+                          height: 40.0,
                           decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.only(
@@ -179,7 +177,7 @@ class _TaskManagerState extends State<TaskManager> {
                                 color: Colors.grey.withOpacity(0.3),
                                 spreadRadius: 1,
                                 blurRadius: 2,
-                                offset: Offset(0, 2), // 그림자가 적용될 위치
+                                offset: Offset(0, 2),
                               ),
                             ],
                           ),
@@ -211,21 +209,20 @@ class _TaskManagerState extends State<TaskManager> {
                     ],
                   ),
                 );
-
               },
             ),
           ),
           Container(
-            margin: EdgeInsets.only(top: 8.0), // 위에 약간의 간격 추가
+            margin: EdgeInsets.only(top: 8.0),
             child: Row(
               children: [
                 Expanded(
                   child: DottedBorder(
                     borderType: BorderType.RRect,
                     radius: Radius.circular(12.0),
-                    dashPattern: [6, 3], // 점선 패턴 설정 (길이 6, 간격 3)
-                    color: Colors.grey, // 점선 색상
-                    strokeWidth: 1, // 점선 두께
+                    dashPattern: [6, 3],
+                    color: Colors.grey,
+                    strokeWidth: 1,
                     child: OutlinedButton(
                       style: OutlinedButton.styleFrom(
                         backgroundColor: Colors.transparent,
