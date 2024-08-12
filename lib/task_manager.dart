@@ -154,41 +154,64 @@ class _TaskManagerState extends State<TaskManager> {
                   margin: EdgeInsets.only(bottom: 8.0),
                   child: Row(
                     children: [
-                      Expanded(
-                        child: ElevatedButton(
-                          onPressed: () => _showTaskInputDialog(index: index),
-                          child: Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              _tasks[index],
-                              style: TextStyle(
-                                decoration: _completedTasks[index]
-                                    ? TextDecoration.lineThrough
-                                    : TextDecoration.none,
-                              ),
-                            ),
-                          ),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.lightGreenAccent.withOpacity(0.2),
-                            foregroundColor: Colors.black,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12.0),
-                            ),
-                            padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 12.0),
+                      Container(
+                        width: 10.0,
+                        height: 40.0, // 고정된 높이 설정
+                        decoration: BoxDecoration(
+                          color: Colors.blue, // 파란색 바
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(12.0),
+                            bottomLeft: Radius.circular(12.0),
                           ),
                         ),
                       ),
-                      Checkbox(
-                        value: _selectedTasks[index],
-                        onChanged: (bool? value) {
-                          setState(() {
-                            _selectedTasks[index] = value ?? false;
-                          });
-                        },
+                      Expanded(
+                        child: Container(
+                          height: 40.0, // 고정된 높이 설정
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.only(
+                              topRight: Radius.circular(12.0),
+                              bottomRight: Radius.circular(12.0),
+                            ),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.3),
+                                spreadRadius: 1,
+                                blurRadius: 2,
+                                offset: Offset(0, 2), // 그림자가 적용될 위치
+                              ),
+                            ],
+                          ),
+                          child: Row(
+                            children: [
+                              Checkbox(
+                                value: _selectedTasks[index],
+                                onChanged: (bool? value) {
+                                  setState(() {
+                                    _selectedTasks[index] = value ?? false;
+                                  });
+                                },
+                              ),
+                              Expanded(
+                                child: Text(
+                                  _tasks[index],
+                                  style: TextStyle(
+                                    decoration: _completedTasks[index]
+                                        ? TextDecoration.lineThrough
+                                        : TextDecoration.none,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
                     ],
                   ),
                 );
+
               },
             ),
           ),
@@ -215,7 +238,7 @@ class _TaskManagerState extends State<TaskManager> {
                       onPressed: () => _showTaskInputDialog(),
                       child: Center(
                         child: Text(
-                          '+ 할일 추가',
+                          '+ 일정 추가',
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 16.0,
