@@ -35,18 +35,20 @@ class MainScreen extends StatelessWidget {
                 backgroundColor: Colors.transparent,
                 elevation: 0,
               ),
-              Expanded(
-                flex: 6,
-                child: Consumer<CalendarModel>(
-                  builder: (context, model, child) {
-                    return Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(16.0),
-                        ),
-                        child: ClipRRect(
+              SizedBox(height: 16.0), // AppBar와 달력 사이의 간격
+              Center(
+                child: Container(
+                  width: 380, // 고정된 너비
+                  height: 300, // 고정된 높이
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(16.0),
+                  ),
+                  child: Align(
+                    alignment: Alignment.center, // 중앙에 배치
+                    child: Consumer<CalendarModel>(
+                      builder: (context, model, child) {
+                        return ClipRRect(
                           borderRadius: BorderRadius.circular(16.0),
                           child: PageView.builder(
                             controller: PageController(initialPage: model.currentPageIndex),
@@ -62,14 +64,13 @@ class MainScreen extends StatelessWidget {
                               return CalendarMonth(date: date);
                             },
                           ),
-                        ),
-                      ),
-                    );
-                  },
+                        );
+                      },
+                    ),
+                  ),
                 ),
               ),
               Expanded(
-                flex: 7,
                 child: Consumer<CalendarModel>(
                   builder: (context, model, child) {
                     return TaskManager(
@@ -81,6 +82,8 @@ class MainScreen extends StatelessWidget {
             ],
           ),
         ),
+
+
       ),
     );
   }
