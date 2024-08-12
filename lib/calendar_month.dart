@@ -16,7 +16,7 @@ class CalendarMonth extends StatelessWidget {
       TableRow(
         children: weekdays.map((day) {
           return Container(
-            padding: const EdgeInsets.all(2.0),
+            padding: const EdgeInsets.all(0.0),
             child: Align(
               alignment: Alignment.center,
               child: Text(
@@ -89,7 +89,7 @@ class CalendarMonth extends StatelessWidget {
       aspectRatio: 1.0,
       child: AnimatedContainer(
         duration: Duration(milliseconds: isBlinking ? 100 : 200),
-        margin: EdgeInsets.all(2.0),
+        margin: EdgeInsets.all(0.0),
         decoration: BoxDecoration(
           border: Border.all(color: Colors.transparent),
           color: isSelected || isInDragRange ? Colors.blue.withOpacity(0.2) : Colors.transparent,
@@ -99,8 +99,8 @@ class CalendarMonth extends StatelessWidget {
           children: [
             if (isToday)
               Container(
-                width: 30.0,
-                height: 30.0,
+                width: 22.0,
+                height: 22.0,
                 decoration: BoxDecoration(
                   color: Colors.blue,
                   shape: BoxShape.circle,
@@ -110,7 +110,7 @@ class CalendarMonth extends StatelessWidget {
               day.toString(),
               style: TextStyle(
                 color: isToday ? Colors.white : textColor,
-                fontSize: 16,
+                fontSize: 14,
               ),
             ),
           ],
@@ -123,7 +123,7 @@ class CalendarMonth extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: Colors.white,
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(16.0),
       child: Table(
         border: TableBorder.all(color: Colors.grey, width: 0.3),
         children: _buildCalendar(context),
