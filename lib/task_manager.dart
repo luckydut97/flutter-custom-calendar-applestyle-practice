@@ -114,19 +114,38 @@ class _TaskManagerState extends State<TaskManager> {
               itemBuilder: (context, index) {
                 return Dismissible(
                   key: Key(_tasks[index]),
-                  direction: DismissDirection.endToStart,
-                  onDismissed: (direction) {
-                    setState(() {
-                      _tasks.removeAt(index);
-                      _completedTasks.removeAt(index); // 해당 작업과 완료 상태 모두 삭제
-                    });
+                  direction: DismissDirection.horizontal,
+                  confirmDismiss: (direction) async {
+                    if (direction == DismissDirection.startToEnd) {
+                      // 왼쪽에서 오른쪽으로 스와이프할 때 편집 모드
+                      _showTaskInputDialog(index: index);
+                      return false; // 아이템을 삭제하지 않도록 false 반환
+                    } else if (direction == DismissDirection.endToStart) {
+                      // 오른쪽에서 왼쪽으로 스와이프할 때 삭제
+                      return true; // 아이템을 삭제하도록 true 반환
+                    }
+                    return false; // 기본적으로 삭제하지 않음
                   },
                   background: Container(
+                    alignment: Alignment.centerLeft,
+                    padding: EdgeInsets.symmetric(horizontal: 20),
+                    color: Colors.blue,
+                    child: Icon(Icons.edit, color: Colors.white),
+                  ),
+                  secondaryBackground: Container(
                     alignment: Alignment.centerRight,
                     padding: EdgeInsets.symmetric(horizontal: 20),
                     color: Colors.redAccent,
                     child: Icon(Icons.delete, color: Colors.white),
                   ),
+                  onDismissed: (direction) {
+                    if (direction == DismissDirection.endToStart) {
+                      setState(() {
+                        _tasks.removeAt(index);
+                        _completedTasks.removeAt(index);
+                      });
+                    }
+                  },
                   child: Container(
                     margin: EdgeInsets.only(bottom: 8.0),
                     child: Row(
@@ -163,7 +182,7 @@ class _TaskManagerState extends State<TaskManager> {
                             child: Row(
                               children: [
                                 Checkbox(
-                                  value: _completedTasks[index], // 완료 상태 반영
+                                  value: _completedTasks[index],
                                   onChanged: (bool? value) {
                                     setState(() {
                                       _completedTasks[index] = value ?? false;
@@ -189,6 +208,8 @@ class _TaskManagerState extends State<TaskManager> {
                     ),
                   ),
                 );
+
+
               },
             ),
           ),
